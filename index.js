@@ -113,23 +113,24 @@ function updateEmployee() {
         mainMenu();
       }
     )
-    })
+    });
 }
     function addRole() {
-      inquirer.prompt([{
-            name: "title",
+      inquirer
+      .prompt([{
         type: "input",
-        message: "What title would you like to add?"
+        message: "What title would you like to add?",
+        name: "title"
       },
       {
-        name: "salary",
         type: "number",
         message: "What is the salary for this title?",
+        name: "salary"
       },
       {
-        name: "department_id",
         type: "number",
         message: "What's the department ID?",
+        name: "department_id"
       },
     ])
           .then((answer) => {
@@ -137,17 +138,17 @@ function updateEmployee() {
             connection.query(
               "INSERT INTO role SET ?",
               {
-                name: answer.role,
+                title: answer.title,
                 salary: answer.salary,
-                departmentID: answer.department_id
+                department_id: answer.department_id
               },
               function (err, res) {
                 if (err) throw err;
-                console.log(res.affectedRows + " role inserted!\n");
+                console.log(res.affectedRows + " title inserted!\n");
                 mainMenu();
               }
             )
-          })
+          });
         }
 
           function addEmployee() {
@@ -172,9 +173,9 @@ function updateEmployee() {
                   connection.query(
                     "INSERT INTO employee SET ?",
                     {
-                      name: answer.first_name,
-                      salary: answer.last_name,
-                      department_id: answer.role_id
+                      first_name: answer.first_name,
+                      last_name: answer.last_name,
+                      role_id: answer.role_id
                     },
                     function (err, res) {
                       if (err) throw err;
