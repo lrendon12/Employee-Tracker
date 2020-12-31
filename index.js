@@ -74,7 +74,8 @@ function addDepartment() {
 
 function viewDepartment() {
   console.log("viewing departments...\n");
-  connection.query("SELECT * FROM department", function (err, res) {
+  var employeeList = [];
+  connection.query("SELECT employee.id, employee.first_name, employee.last_name FROM employee", function (err, res) {
     if (err) throw err;
 
     console.table(res);
@@ -82,11 +83,13 @@ function viewDepartment() {
   });
 }
 function updateEmployee() {
+  var employeeList =[];
     inquirer.prompt([
         {
-            type: "input", 
+            type: "list", 
             message: "Which employee do you want to update?",
-            name: "employee_id"
+            name: "employee_id",
+            choices: employeeList
         },
         {
             type: "input",
@@ -96,7 +99,7 @@ function updateEmployee() {
     ]).then((answer) => {
     
 
-    console.log("Updating employees...\n");
+    console.log("Updating employee...\n");
     connection.query(
       "UPDATE employee SET ? WHERE ?",
       [
@@ -104,12 +107,12 @@ function updateEmployee() {
           role_id: answer.role_id
         },
         {
-          id: answer.employee_id
+          employee_id: answer.employee_id
         }
       ],
       function(err, res) {
         if (err) throw err;
-        console.log(res.affectedRows + " employees updated!\n");
+        console.log(res.affectedRows + " employee updated!\n");
         mainMenu();
       }
     )
